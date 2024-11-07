@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>image zoom with modal</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style >
+    .zoomThumb-box{
+      padding: 10px 5px;
+}
+.zoomThumb-container {
+transition: all 0.3s;
+}
+
+.lense {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMiIgaGVpZ2h0PSIyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZmlsbC1vcGFjaXR5PSIuMDUiIGZpbGw9IiNGRkYiIGQ9Ik0wIDBoMnYySDB6Ii8+PHBhdGggZD0iTTAgMGgxdjFIMHoiIGZpbGw9IiM4REFDREEiLz48L2c+PC9zdmc+) repeat;
+}
+.zooming-container {
+    width: 100%;
+    max-width: 550px;
+    height: 500px;
+    overflow: hidden;
+    box-shadow: 0px 12px 25px 0px #cdcdcd;
+    border-radius: 5px;
+    position: absolute;
+}
+.zooming-container img{
+  position: relative;
+}
+.zoom-item {
+    width: calc(100%/5);
+    cursor: pointer;
+}
+.zoom-item figure {
+    border: 1px solid #eeeeee;
+    width: calc(100% - 10px);
+}
+.zoom-item.active figure {
+    box-shadow: 0px 2px 8px -1px #989898;
+    border-color: #bbd1fc;
+}
+.slider-nav {
+    position: absolute;
+    /* top: 50%; */
+    width: 100%;
+    /* transform: translateY(-50%); */
+}
+.slider-nav li {
+    list-style: none;
+    display: flex;
+    position: absolute;
+    bottom: 34px;
+}
+.slider-nav li:first-child {
+    left: 0;
+}
+.slider-nav li:last-child {
+    right: 0;
+}
+
+.slider-cta {
+    width: 36px;
+    height: 36px;
+    background: #4a6d9f;
+}
+
+.slider-cta i {
+    color: #fff;
+    font-size: 22px;
+}
+.slider-cta.disabled {
+    visibility: hidden;
+}
+
+
+.sliderModalOverlay {
+    left: 0;
+    top: 0;
+    background-color: rgb(0 0 0 / 85%);
+    z-index: 999;
+}
+
+.zoomslidermodal-box {
+    left: 50%;
+    top: 50%;
+    z-index: 1000;
+    max-width: 1000px;
+    display: flex;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+}
+
+.modal-zoomImg img {
+    max-height: calc(100vh - 200px);
+    max-width: 100%;
+}
+.modal-zoomThumb-container  .zoom-item {
+    flex: 1;
+}
+
+.close-zoom-modal {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    right: -20px;
+    top: -20px;
+}
+
+
+
+</style>
+ </head>
+  <body>
+
+
+
+<div class="container">
+<div class="row align-items-center" style="min-height: 100vh;">
+<div class="col-lg-5  col-12">
+  <div class="w-100 position-relative">
+    <figure class="w-100 m-0 position-relative zoombox" id="zoombox">
+      <img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/1.jpg" alt="" class="w-100" id="zoomImg">
+    </figure>
+
+    <div class="w-100 overflow-hidden zoomThumb-box">
+      <div class="w-100 d-flex align-items-start zoomThumb-container">
+          <div class="zoom-item flex-shrink-0 d-flex align-items-center justify-content-center"><figure class="m-0"><img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/1.jpg" alt="" class="w-100 object-cover"></figure></div>
+          <div class="zoom-item flex-shrink-0 d-flex align-items-center justify-content-center"><figure class="m-0"><img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/2.jpg" alt="" class="w-100 object-cover"></figure></div>
+          <div class="zoom-item flex-shrink-0 d-flex align-items-center justify-content-center"><figure class="m-0"><img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/3.jpg" alt="" class="w-100 object-cover"></figure></div>
+          <div class="zoom-item flex-shrink-0 d-flex align-items-center justify-content-center"><figure class="m-0"><img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/4.jpg" alt="" class="w-100 object-cover"></figure></div>
+          <div class="zoom-item flex-shrink-0 d-flex align-items-center justify-content-center"><figure class="m-0"><img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/5.jpg" alt="" class="w-100 object-cover"></figure></div>
+          <div class="zoom-item flex-shrink-0 d-flex align-items-center justify-content-center"><figure class="m-0"><img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/6.jpg" alt="" class="w-100 object-cover"></figure></div>
+        
+          <div class="zoom-item flex-shrink-0 d-flex align-items-center justify-content-center"><figure class="m-0"><img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/1.jpg" alt="" class="w-100 object-cover"></figure></div>
+          <div class="zoom-item flex-shrink-0 d-flex align-items-center justify-content-center"><figure class="m-0"><img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/2.jpg" alt="" class="w-100 object-cover"></figure></div>
+          <div class="zoom-item flex-shrink-0 d-flex align-items-center justify-content-center"><figure class="m-0"><img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/3.jpg" alt="" class="w-100 object-cover"></figure></div>
+          <div class="zoom-item flex-shrink-0 d-flex align-items-center justify-content-center"><figure class="m-0"><img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/4.jpg" alt="" class="w-100 object-cover"></figure></div>
+          <div class="zoom-item flex-shrink-0 d-flex align-items-center justify-content-center"><figure class="m-0"><img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/5.jpg" alt="" class="w-100 object-cover"></figure></div>
+          <div class="zoom-item flex-shrink-0 d-flex align-items-center justify-content-center"><figure class="m-0"><img src="https://mank.sfwpdemo.com/old_files/codepen/images/product/6.jpg" alt="" class="w-100 object-cover"></figure></div>
+       
+      </div>
+      <!-- zoomThumb-container -->
+    </div>
+    <!-- zoomThumb-box -->
+
+  </div>
+</div>
+</div>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    var i = 1,
+    lenseLength, lense_width, lense_height, half_lense_width, half_lense_height, parentOffset, parentOffset_left, parentOffset_top, zoombox_width, zoombox_height, zoomitem_length, zoomitem_Width, zoomImgContainer, zoomImg, thumbIndex;
+
+var lense = '<span class="lense"></span>';
+
+var zoomThumbNav = '<ul class="slider-nav d-flex align-items-center justify-content-between m-0 w-100 p-0"><li><button type="button" class="btn btn-default p-0 d-flex align-items-center justify-content-center slider-cta prev-nav disabled" onclick="myPrevCta()"><i class="fa fa-angle-left" ></i></button></li><li><button type="button" class="btn btn-default p-0 d-flex justify-content-center align-items-center slider-cta next-nav" onclick="myNextCta()"><i class="fa fa-angle-right"></i></button></li></ul>';
+
+zoomitem_Width = jQuery(".zoom-item").width();
+zoomitem_length = jQuery(".zoom-item").length;
+
+
+jQuery(".zoom-item:first-child").addClass("active");
+
+if (zoomitem_length >= 5) {
+    jQuery(".zoomThumb-box").append(zoomThumbNav)
+}
+
+
+zoomImg = jQuery("#zoomImg").attr("src");
+
+
+zoombox_width = jQuery(".zoombox").width();
+zoombox_height = jQuery(".zoombox").height();
+
+parentOffset = jQuery(".zoombox").offset();
+
+
+parentOffset_left = parentOffset.left;
+parentOffset_top = parentOffset.top;
+
+
+
+
+// this js start for mouse zoom effect
+
+
+jQuery(".zoombox").on("mousemove", function(e) {
+
+    zoomImgContainer = '<div class="zooming-container position-absolute"><img src="' + zoomImg + '" alt=""></div>'
+    lenseLength = jQuery('.lense').length;
+
+    if (lenseLength !== 1) {
+
+        jQuery(".zoombox").append(lense);
+        jQuery("body").append(zoomImgContainer);
+
+        jQuery(".zooming-container").css({
+            "left": (parentOffset_left + zoombox_width + 10) + "px",
+            "top": parentOffset_top + "px"
+        })
+
+    }
+
+    lense_width = jQuery('.lense').width();
+    lense_height = jQuery('.lense').height();
+
+    half_lense_width = lense_width / 2;
+    half_lense_height = lense_height / 2;
+
+
+    var relX = e.pageX - parentOffset_left;
+    var relY = e.pageY - parentOffset_top;
+
+    var end_relX = zoombox_width - half_lense_width;
+    var end_relY = zoombox_height - half_lense_height;
+
+    if (relX >= half_lense_width) {
+
+        jQuery(".lense").css({
+            "left": (relX - half_lense_width) + "px"
+        });
+        jQuery(".zooming-container img").css({
+            "left": -(relX - half_lense_width) + "px"
+        });
+
+
+        if (relX >= end_relX) {
+            jQuery(".lense").css({
+                "left": (zoombox_width - lense_width) + "px"
+            });
+            jQuery(".zooming-container img").css({
+                "left": -(zoombox_width - lense_width) + "px"
+            });
+
+        } else {
+            jQuery(".lense").css({
+                "left": (relX - half_lense_width) + "px"
+            });
+            jQuery(".zooming-container img").css({
+                "left": -(relX - half_lense_width) + "px"
+            });
+        }
+
+
+    }
+
+
+    if (relY >= half_lense_height) {
+
+        jQuery(".lense").css({
+            "top": (relY - half_lense_height) + "px"
+        });
+        jQuery(".zooming-container img").css({
+            "top": -(relY - half_lense_height) + "px"
+        });
+
+        if (relY >= end_relY) {
+
+            jQuery(".lense").css({
+                "top": (zoombox_height - lense_height) + "px"
+            });
+            jQuery(".zooming-container img").css({
+                "top": -(zoombox_height - lense_height) + "px"
+            });
+
+        } else {
+            jQuery(".lense").css({
+                "top": (relY - half_lense_height) + "px"
+            });
+        }
+
+    }
+
+
+});
+
+
+
+// this js end for mouse zoom effect 
+
+
+jQuery(".zoombox").on("mouseleave", function() {
+    jQuery(".lense,.zooming-container").remove();
+})
+
+
+var j = 1;
+var transform;
+
+
+// this js start for thumb zoom item next click 
+
+function myNextCta() {
+
+    i++;
+
+    jQuery(".zoom-item").removeClass("active");
+    jQuery('.zoom-item:nth-child(' + i + ')').addClass("active");
+
+    zoomImg = jQuery('.zoom-item:nth-child(' + i + ')').find("img").attr("src");
+    jQuery("#zoomImg").attr("src", zoomImg)
+
+    if (i > 4) {
+        transform = zoomitem_Width * j;
+
+        jQuery(".prev-nav").removeClass("disabled")
+
+        jQuery(".zoomThumb-container").css({
+            'transform': 'translateX(' + -transform + "px" + ')'
+        })
+
+        j++;
+
+    }
+
+    if (i === (zoomitem_length - 1)) {
+        jQuery(".next-nav").addClass("disabled")
+    }
+    console.log(j)
+
+}
+
+// this js end for thumb zoom item next click 
+
+
+
+// this js start for thumb zoom item previous click 
+
+function myPrevCta() {
+
+    i--;
+    j--;
+
+    jQuery(".zoom-item").removeClass("active");
+    jQuery('.zoom-item:nth-child(' + i + ')').addClass("active");
+
+    transform = transform - zoomitem_Width;
+    jQuery(".zoomThumb-container").css({
+        'transform': 'translateX(' + -transform + "px" + ')'
+    });
+
+
+    if (i === (zoomitem_length - 2)) {
+        jQuery(".next-nav").removeClass("disabled")
+    }
+
+    if (i === 4) {
+        jQuery(".prev-nav").addClass("disabled")
+    }
+
+
+}
+
+// this js end for thumb zoom item previous click 
+
+
+
+
+// this js start for thumb zoom item click 
+
+jQuery(".zoom-item").on("click", function() {
+
+    jQuery(".zoom-item").removeClass("active");
+    jQuery(this).addClass("active")
+
+    zoomImg = jQuery(this).find("img").attr("src");
+    jQuery("#zoomImg").attr("src", zoomImg)
+
+    thumbIndex = jQuery(this).index() + 1;
+
+    i = thumbIndex;
+
+
+    if (thumbIndex > 4) {
+
+        j = thumbIndex - 4;
+
+
+        transform = zoomitem_Width * j;
+
+        jQuery(".prev-nav").removeClass("disabled")
+
+        jQuery(".zoomThumb-container").css({
+            'transform': 'translateX(' + -transform + "px" + ')'
+        })
+
+        jQuery(".next-nav").removeClass("disabled")
+
+    } else {
+        jQuery(".prev-nav").addClass("disabled")
+    }
+
+
+})
+
+// this js end for thumb zoom item click 
+
+
+
+
+
+
+
+
+
+
+jQuery(document).on("click",".zoombox", function(){
+var activeThumbImg  = jQuery(".zoom-item.active").find("img").attr("src");
+var zoomSliderHtml = jQuery('.zoomThumb-container').html();
+var sliderModalOverlay = '<div class="position-fixed w-100 h-100 sliderModalOverlay"></div>';
+
+var modalzoomThumbcontainer = '<div class="modal-zoomThumb-container w-100 d-flex align-items-start">'+zoomSliderHtml+'</div>'
+
+var activeFigureImg = '<div class="w-100 d-flex justify-content-center mb-3 position-relative"><figure class="modal-zoomImg m-0 position-relative" id="modal-zoomImg"><img src='+activeThumbImg+' alt=""><button type="button" class="btn p-0 text-white  btn-danger position-absolute d-flex align-items-center justify-content-center close-zoom-modal">X</button></figure></div>';
+
+var sliderModalHtml = '<div class="w-100 position-fixed zoomslidermodal-box"><div class="zoomslidermodal-wrapper">'+activeFigureImg+' '+modalzoomThumbcontainer+'</div></div>';
+
+jQuery("body").append(sliderModalOverlay,sliderModalHtml)
+
+
+})
+
+
+
+
+jQuery(document).on("click", ".modal-zoomThumb-container .zoom-item", function(){
+
+
+  jQuery(".modal-zoomThumb-container .zoom-item").removeClass("active")
+  jQuery(this).addClass("active")
+  var  modalactiveImg = jQuery(this).find("img").attr("src");
+
+  jQuery("#modal-zoomImg img").attr("src",modalactiveImg)
+
+})
+
+
+jQuery(document).on("click",".close-zoom-modal", function(){
+  jQuery(".zoomslidermodal-box,.sliderModalOverlay").remove()
+})
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
